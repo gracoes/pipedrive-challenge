@@ -17,7 +17,7 @@ jobs:
           node-version: '14'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --only=dev
 
       - name: Run lint script
         run: npm run lint
