@@ -1,0 +1,32 @@
+{
+  "name": "pipedrive-backend-challenge",
+  "version": "0.0.1",
+  "description": "A RESTful service that stores and returns organizations and their relations with other organizations",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">= 0.14"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "prettier": "2.2.1"
+  },
+  "scripts": {
+    "format": "prettier -w .",
+    "eslint": "eslint .",
+    "lint": "npm run format && npm run eslint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gracoes/pipedrive-challenge.git"
+  },
+  "author": "gracoes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gracoes/pipedrive-challenge/issues"
+  },
+  "homepage": "https://github.com/gracoes/pipedrive-challenge#readme"
+}

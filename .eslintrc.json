@@ -1,0 +1,57 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "rules": {
+      "array-callback-return": "error",
+      "arrow-body-style": [
+        "error",
+        "as-needed",
+        { "requireReturnForObjectLiteral": true }
+      ],
+      "block-scoped-var": "error",
+      "camelcase": "error",
+      "complexity": "warn",
+      "eqeqeq": "error",
+      "lines-between-class-members": "error",
+      "new-cap": "error",
+      "no-implicit-coercion": "error",
+      "no-lonely-if": "error",
+      "no-nested-ternary": "error",
+      "no-throw-literal": "error",
+      "no-unneeded-ternary": "error",
+      "no-useless-return": "error",
+      "padding-line-between-statements": [
+        "error",
+        { "blankLine": "always", "prev": "*", "next": "return"}
+      ],
+      "prefer-arrow-callback": "error",
+      "prefer-const": "error",
+      "prefer-template": "error",
+      "quotes": [
+        "error",
+        "double",
+        { "avoidEscape": true, "allowTemplateLiterals": false }
+      ],
+      "require-await": "error",
+      "sort-imports": [
+        "error",
+        { "allowSeparatedGroups": true }
+      ],
+      "sort-keys": [
+        "error",
+        "asc",
+        { "natural": true }
+      ],
+      "spaced-comment": "error"
+    }
+}
