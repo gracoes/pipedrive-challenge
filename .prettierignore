@@ -4,3 +4,5 @@ package.json
 package-lock.json
 .prettierrc.json
 LICENSE
+.vscode
+.github/pull_request_template.md
