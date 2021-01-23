@@ -1,9 +1,6 @@
 name: Pull request checks
 
-on: 
-  pull_request:
-    branches:
-      - add-prettier-and-eslint
+on: [pull_request]
 
 jobs:
   lint:
