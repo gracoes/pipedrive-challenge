@@ -15,6 +15,7 @@
       "array-callback-return": "error",
       "arrow-body-style": [
         "error",
+        "as-needed",
         { "requireReturnForObjectLiteral": true }
       ],
       "block-scoped-var": "error",
@@ -44,7 +45,7 @@
       "require-await": "error",
       "sort-imports": [
         "error",
-        { "allowSeparateGroups": true }
+        { "allowSeparatedGroups": true }
       ],
       "sort-keys": [
         "error",
