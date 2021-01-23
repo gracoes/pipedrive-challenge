@@ -1,0 +1,6 @@
+.eslintrc.*
+README.md
+package.json
+package-lock.json
+.prettierrc.json
+LICENSE
