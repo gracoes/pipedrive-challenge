@@ -19,7 +19,7 @@
     "prettier": "2.2.1"
   },
   "scripts": {
-    "format": "prettier -w .",
+    "format": "prettier -c .",
     "eslint": "eslint .",
     "lint": "npm run format && npm run eslint",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
