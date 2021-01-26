@@ -1,7 +1,8 @@
 {
     "env": {
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
       "eslint:recommended",
@@ -19,11 +20,13 @@
         { "requireReturnForObjectLiteral": true }
       ],
       "block-scoped-var": "error",
-      "camelcase": "error",
       "complexity": "warn",
       "eqeqeq": "error",
       "lines-between-class-members": "error",
-      "new-cap": "error",
+      "new-cap": [
+        "error",
+        { "capIsNew": false}
+      ],
       "no-implicit-coercion": "error",
       "no-lonely-if": "error",
       "no-nested-ternary": "error",
@@ -46,11 +49,6 @@
       "sort-imports": [
         "error",
         { "allowSeparatedGroups": true }
-      ],
-      "sort-keys": [
-        "error",
-        "asc",
-        { "natural": true }
       ],
       "spaced-comment": "error"
     }
