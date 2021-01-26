@@ -1,4 +1,4 @@
-import mapRelations from "./relations-mapper.js";
+import mapRelations from "./index.js";
 
 test("maps relations with max depth of 1", () => {
   const organization = {
