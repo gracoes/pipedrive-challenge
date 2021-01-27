@@ -14,11 +14,7 @@
     },
     "rules": {
       "array-callback-return": "error",
-      "arrow-body-style": [
-        "error",
-        "as-needed",
-        { "requireReturnForObjectLiteral": true }
-      ],
+      "arrow-body-style": "error",
       "block-scoped-var": "error",
       "complexity": "warn",
       "eqeqeq": "error",
