@@ -79,7 +79,7 @@ describe("SQLite Adapter", () => {
     expect(records).toHaveLength(0);
   });
 
-  test("it fetches records by name ", async () => {
+  test("it fetches records by name", async () => {
     const adapter = await Adapter(db);
 
     await db.exec(
@@ -89,13 +89,37 @@ describe("SQLite Adapter", () => {
       "INSERT INTO relations VALUES ('Parent', 'Child 1', 'parent')"
     );
 
-    const rows = await adapter.fetchAllByName("Parent");
+    const records = await adapter.queryByNamePaginated({
+      name: "Parent",
+      limit: 10,
+    });
 
-    expect(rows).toEqual(
-      expect.arrayContaining([
-        { head: "Parent", tail: "Child 1", type: "parent" },
-        { head: "Parent", tail: "Child 2", type: "parent" },
-      ])
-    );
+    expect(records).toEqual([
+      { head: "Parent", tail: "Child 1", type: "parent" },
+      { head: "Parent", tail: "Child 2", type: "parent" },
+    ]);
+  });
+
+  test("it fetches records by name with pagination", async () => {
+    const adapter = await Adapter(db);
+
+    for (let idx = 1; idx < 10; idx++) {
+      await db.exec(
+        `INSERT INTO relations VALUES ('Parent', 'Child ${idx}', 'parent')`
+      );
+    }
+
+    const records = await adapter.queryByNamePaginated({
+      name: "Parent",
+      lastSeen: "Child 5",
+      limit: 5,
+    });
+
+    expect(records).toEqual([
+      { head: "Parent", tail: "Child 6", type: "parent" },
+      { head: "Parent", tail: "Child 7", type: "parent" },
+      { head: "Parent", tail: "Child 8", type: "parent" },
+      { head: "Parent", tail: "Child 9", type: "parent" },
+    ]);
   });
 });

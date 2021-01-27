@@ -34,12 +34,28 @@ export default async function Adapter(dbClient) {
     );
   }
 
-  function fetchAllByName(name) {
-    return dbClient.all("SELECT * FROM relations WHERE head = :name", [name]);
+  function prepareQueryByName({ name, lastSeen = null, limit }) {
+    if (lastSeen) {
+      return dbClient.prepare(
+        "SELECT * FROM relations WHERE head = :name AND tail > :last LIMIT :limit",
+        [name, lastSeen, limit]
+      );
+    }
+
+    return dbClient.prepare(
+      "SELECT * FROM relations WHERE head = :name LIMIT :limit",
+      [name, limit]
+    );
+  }
+
+  async function queryByNamePaginated({ name, lastSeen = null, limit }) {
+    const query = await prepareQueryByName({ name, lastSeen, limit });
+
+    return query.all();
   }
 
   return {
     batchInsert,
-    fetchAllByName,
+    queryByNamePaginated,
   };
 }

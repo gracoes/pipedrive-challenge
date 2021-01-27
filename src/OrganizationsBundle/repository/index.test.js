@@ -17,7 +17,7 @@ describe("Organizations Repository", () => {
 
   test("it returns relations of an organization", async () => {
     const adapter = {
-      fetchAllByName: jest.fn(() =>
+      queryByNamePaginated: jest.fn(() =>
         Promise.resolve([
           {
             head: "Parent",
@@ -28,13 +28,16 @@ describe("Organizations Repository", () => {
       ),
     };
     const repository = Repository(adapter);
-    const records = await repository.findByOrganization("Parent");
+    const records = await repository.findByOrganization({ name: "Parent" });
 
-    expect(records).toEqual([
-      {
-        relationship_type: "child",
-        org_name: "Child 1",
-      },
-    ]);
+    expect(records).toEqual({
+      items: [
+        {
+          relationship_type: "child",
+          org_name: "Child 1",
+        },
+      ],
+      lastRecord: "Child 1",
+    });
   });
 });

@@ -1,3 +1,5 @@
+const DEFAULT_MAX_ROWS_PER_PAGE = 100;
+
 export default function (adapter) {
   return {
     saveRelations: async (relations) => {
@@ -6,23 +8,34 @@ export default function (adapter) {
 
         return true;
       } catch (err) {
-        console.error("Something went wrong");
-
-        throw new Error(err.message);
+        throw new Error(err);
       }
     },
-    findByOrganization: async (organization) => {
+    findByOrganization: async ({
+      name,
+      lastSeen,
+      limit = DEFAULT_MAX_ROWS_PER_PAGE,
+    }) => {
       try {
-        const records = await adapter.fetchAllByName(organization);
+        const records = await adapter.queryByNamePaginated({
+          name,
+          lastSeen,
+          limit,
+        });
+        const lastRecordIdx = records.length < limit ? records.length : limit;
+        const { tail } = records[lastRecordIdx - 1];
 
-        return records.map(({ tail, type }) => ({
+        const items = records.map(({ tail, type }) => ({
           relationship_type: type,
           org_name: tail,
         }));
-      } catch (err) {
-        console.error("Something went wrong");
 
-        throw new Error();
+        return {
+          items,
+          lastRecord: tail,
+        };
+      } catch (err) {
+        throw new Error(err);
       }
     },
   };
