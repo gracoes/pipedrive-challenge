@@ -1,3 +1,8 @@
-export default function (req, res) {
-  return res.status(500).json({ message: "Not Implemented" });
+export default function (repository) {
+  return async (req, res) => {
+    const { name } = req.params;
+    const relations = await repository.findByOrganization(name);
+
+    return res.status(200).json(relations);
+  };
 }
