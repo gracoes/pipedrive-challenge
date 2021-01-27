@@ -6,9 +6,23 @@ export default function (adapter) {
 
         return true;
       } catch (err) {
-        console.error("Someting went wrong");
+        console.error("Something went wrong");
 
-        return false;
+        throw new Error(err.message);
+      }
+    },
+    findByOrganization: async (organization) => {
+      try {
+        const records = await adapter.fetchAllByName(organization);
+
+        return records.map(({ tail, type }) => ({
+          relationship_type: type,
+          org_name: tail,
+        }));
+      } catch (err) {
+        console.error("Something went wrong");
+
+        throw new Error();
       }
     },
   };
