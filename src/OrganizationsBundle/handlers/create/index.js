@@ -6,6 +6,7 @@ export default function (repo) {
 
     return repo
       .saveRelations(relations)
-      .then(() => res.status(200).json({ message: "Success!" }));
+      .then(() => res.status(200).json({ message: "Success!" }))
+      .catch(({ message }) => res.status(500).json({ message }));
   };
 }

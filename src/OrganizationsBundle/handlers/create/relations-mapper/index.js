@@ -12,23 +12,29 @@ export default function mapRelations({ org_name: orgName, daughters }) {
 }
 
 function mapParents(parent, children) {
-  return children.map(({ org_name }) => {
-    return { head: parent, tail: org_name, type: "parent" };
-  });
+  return children.map(({ org_name }) => ({
+    head: parent,
+    tail: org_name,
+    type: "parent",
+  }));
 }
 
 function mapChildren(parent, children) {
-  return children.map(({ org_name }) => {
-    return { head: org_name, tail: parent, type: "daughter" };
-  });
+  return children.map(({ org_name }) => ({
+    head: org_name,
+    tail: parent,
+    type: "daughter",
+  }));
 }
 
 function mapSiblings(children) {
   return children.flatMap(({ org_name }, __, array) =>
     array
       .filter(({ org_name: org }) => org !== org_name)
-      .map(({ org_name: org }) => {
-        return { head: org_name, tail: org, type: "sister" };
-      })
+      .map(({ org_name: org }) => ({
+        head: org_name,
+        tail: org,
+        type: "sister",
+      }))
   );
 }
