@@ -13,26 +13,29 @@ export default function (adapter) {
     },
     findByOrganization: async ({
       name,
-      lastSeen,
+      before = null,
+      after = null,
       limit = DEFAULT_MAX_ROWS_PER_PAGE,
     }) => {
       try {
         const records = await adapter.queryByNamePaginated({
           name,
-          lastSeen,
+          before,
+          after,
           limit,
         });
-        const lastRecordIdx = records.length < limit ? records.length : limit;
-        const { tail } = records[lastRecordIdx - 1];
 
         const items = records.map(({ tail, type }) => ({
           relationship_type: type,
           org_name: tail,
         }));
 
+        const isLastPage = records.length < limit;
+        const exclusiveStartKey = isLastPage ? null : records[limit - 1].tail;
+
         return {
           items,
-          lastRecord: tail,
+          exclusiveStartKey,
         };
       } catch (err) {
         throw new Error(err);

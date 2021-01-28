@@ -2,13 +2,19 @@ export default function (repository) {
   return async (req, res) => {
     try {
       const { name } = req.params;
-      const { lastSeen } = req.query;
-      const { items, lastRecord } = await repository.findByOrganization({
+      const { before, after } = req.query;
+      const { items, exclusiveStartKey } = await repository.findByOrganization({
         name,
-        lastSeen,
+        before,
+        after,
       });
 
-      return res.status(200).json({ relations: items, lastSeen: lastRecord });
+      return res.status(200).json({
+        relations: items,
+        pagination: {
+          next_cursor: exclusiveStartKey,
+        },
+      });
     } catch ({ message }) {
       return res.status(500).json({ message });
     }

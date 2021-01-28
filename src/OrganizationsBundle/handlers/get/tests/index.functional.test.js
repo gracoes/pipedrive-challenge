@@ -60,7 +60,7 @@ describe("Get organizations's relations handler - Functional", () => {
     const handler = getHandler(repository);
     const req = {
       query: {
-        lastSeen: "Balvino",
+        after: "Balvino",
       },
       params: {
         name: "Parent",
@@ -80,5 +80,34 @@ describe("Get organizations's relations handler - Functional", () => {
     await handler(req, res);
 
     expect.assertions(2);
+  });
+
+  test("it returns the middle 50 'Parent' relations", async () => {
+    const handler = getHandler(repository);
+    const req = {
+      query: {
+        before: "Basimah",
+        after: "Antonia",
+      },
+      params: {
+        name: "Parent",
+      },
+    };
+    const res = {
+      status: jest.fn((status) => {
+        expect(status).toEqual(200);
+
+        return res;
+      }),
+      json: jest.fn(({ relations }) => {
+        expect(relations).toHaveLength(50);
+        expect(relations[0].org_name).toEqual("April");
+        expect(relations[49].org_name).toEqual("Basilia");
+      }),
+    };
+
+    await handler(req, res);
+
+    expect.assertions(4);
   });
 });

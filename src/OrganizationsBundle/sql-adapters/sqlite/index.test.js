@@ -79,7 +79,7 @@ describe("SQLite Adapter", () => {
     expect(records).toHaveLength(0);
   });
 
-  test("it fetches records by name", async () => {
+  test("it queries records by name", async () => {
     const adapter = await Adapter(db);
 
     await db.exec(
@@ -100,7 +100,7 @@ describe("SQLite Adapter", () => {
     ]);
   });
 
-  test("it fetches records by name with pagination", async () => {
+  test("it queries records by name with 'after' pagination", async () => {
     const adapter = await Adapter(db);
 
     for (let idx = 1; idx < 10; idx++) {
@@ -111,7 +111,7 @@ describe("SQLite Adapter", () => {
 
     const records = await adapter.queryByNamePaginated({
       name: "Parent",
-      lastSeen: "Child 5",
+      after: "Child 5",
       limit: 5,
     });
 
@@ -120,6 +120,53 @@ describe("SQLite Adapter", () => {
       { head: "Parent", tail: "Child 7", type: "parent" },
       { head: "Parent", tail: "Child 8", type: "parent" },
       { head: "Parent", tail: "Child 9", type: "parent" },
+    ]);
+  });
+
+  test("it queries records by name with 'before' pagination", async () => {
+    const adapter = await Adapter(db);
+
+    for (let idx = 1; idx < 10; idx++) {
+      await db.exec(
+        `INSERT INTO relations VALUES ('Parent', 'Child ${idx}', 'parent')`
+      );
+    }
+
+    const records = await adapter.queryByNamePaginated({
+      name: "Parent",
+      after: "Child 3",
+      before: "Child 6",
+      limit: 2,
+    });
+
+    expect(records).toEqual([
+      { head: "Parent", tail: "Child 4", type: "parent" },
+      { head: "Parent", tail: "Child 5", type: "parent" },
+    ]);
+  });
+
+  test("it queries records by name and returns them sorted alphabetically", async () => {
+    const adapter = await Adapter(db);
+
+    await db.exec(
+      "INSERT INTO relations VALUES ('Parent', 'Child 2', 'parent')"
+    );
+    await db.exec(
+      "INSERT INTO relations VALUES ('Parent', 'Child 1', 'parent')"
+    );
+    await db.exec(
+      "INSERT INTO relations VALUES ('Parent', 'Child 3', 'parent')"
+    );
+
+    const records = await adapter.queryByNamePaginated({
+      name: "Parent",
+      limit: 5,
+    });
+
+    expect(records).toEqual([
+      { head: "Parent", tail: "Child 1", type: "parent" },
+      { head: "Parent", tail: "Child 2", type: "parent" },
+      { head: "Parent", tail: "Child 3", type: "parent" },
     ]);
   });
 });

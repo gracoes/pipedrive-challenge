@@ -37,7 +37,17 @@ describe("Organizations Repository", () => {
           org_name: "Child 1",
         },
       ],
-      lastRecord: "Child 1",
+      exclusiveStartKey: null,
     });
+  });
+
+  test("it returns empty set when organization has no relations", async () => {
+    const adapter = {
+      queryByNamePaginated: jest.fn(() => Promise.resolve([])),
+    };
+    const repository = Repository(adapter);
+    const records = await repository.findByOrganization({ name: "Parent" });
+
+    expect(records).toEqual({ items: [], exclusiveStartKey: null });
   });
 });

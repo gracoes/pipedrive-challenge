@@ -12,8 +12,12 @@ describe("Get organizations's relations handler", () => {
               relationship_type: "child",
               org_name: "Child 1",
             },
+            {
+              relationship_type: "child",
+              org_name: "Child 2",
+            },
           ],
-          lastRecord: "Child 1",
+          exclusiveStartKey: null,
         })
       ),
     };
@@ -37,8 +41,14 @@ describe("Get organizations's relations handler", () => {
               relationship_type: "child",
               org_name: "Child 1",
             },
+            {
+              relationship_type: "child",
+              org_name: "Child 2",
+            },
           ],
-          lastSeen: "Child 1",
+          pagination: {
+            next_cursor: null,
+          },
         })
       ),
     };

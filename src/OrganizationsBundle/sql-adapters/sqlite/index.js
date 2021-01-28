@@ -34,11 +34,18 @@ export default async function Adapter(dbClient) {
     );
   }
 
-  function prepareQueryByName({ name, lastSeen = null, limit }) {
-    if (lastSeen) {
+  function prepareQueryByName({ name, before = null, after = null, limit }) {
+    if (before && after) {
       return dbClient.prepare(
-        "SELECT * FROM relations WHERE head = :name AND tail > :last LIMIT :limit",
-        [name, lastSeen, limit]
+        "SELECT * FROM relations WHERE head = :name AND tail < :before AND tail > :after LIMIT :limit",
+        [name, before, after, limit]
+      );
+    }
+
+    if (after) {
+      return dbClient.prepare(
+        "SELECT * FROM relations WHERE head = :name AND tail > :after LIMIT :limit",
+        [name, after, limit]
       );
     }
 
@@ -48,8 +55,13 @@ export default async function Adapter(dbClient) {
     );
   }
 
-  async function queryByNamePaginated({ name, lastSeen = null, limit }) {
-    const query = await prepareQueryByName({ name, lastSeen, limit });
+  async function queryByNamePaginated({
+    name,
+    before = null,
+    after = null,
+    limit,
+  }) {
+    const query = await prepareQueryByName({ name, before, after, limit });
 
     return query.all();
   }
