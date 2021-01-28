@@ -23,6 +23,7 @@
         "error",
         { "capIsNew": false}
       ],
+      "no-console": "error",
       "no-implicit-coercion": "error",
       "no-lonely-if": "error",
       "no-nested-ternary": "error",
