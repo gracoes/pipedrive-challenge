@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
-import Adapter from "../../../sql-adapters/sqlite/index.js";
+import Adapter from "../../../adapters/sqlite/index.js";
 import Repository from "../../../repository/index.js";
 import fixtures from "./names.js";
 import getHandler from "../index.js";
