@@ -80,3 +80,17 @@ An example of a succesful response.
 }
 ```
 More information [LINK](LINK)
+
+## DB Schema
+![schema](./docs/db_schema.png)  
+
+The service is supported by a `relations` table and an associated index.  
+Each row of `relations` can be seen as an edge of a graph where the column `head` represents the start vertice, the column `tail` represents the end vertice, and the column `type` representing the type of relationship.  
+### The index
+Since retrieving relations by alphabetical order needs to be supported, an index was created on the `relations` table where the `head` column acts as the "primary key" and the `tail` column acts as the "sort key".  This can be seen as an `ORDER BY` done at insertion time instead of query time.  
+
+**Example**  
+The relations table could be in this state and no order would be guaranteed.  
+![table](./docs/db_schema_table.png)  
+However, the index would be like this, guaranteeing the alphabetical order.  
+![index](./docs/db_schema_index.png)
