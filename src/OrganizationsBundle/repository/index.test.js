@@ -37,7 +37,8 @@ describe("Organizations Repository", () => {
           org_name: "Child 1",
         },
       ],
-      exclusiveStartKey: null,
+      exclusivePrevKey: "Child 1",
+      exclusiveNextKey: null,
     });
   });
 
@@ -48,6 +49,10 @@ describe("Organizations Repository", () => {
     const repository = Repository(adapter);
     const records = await repository.findByOrganization({ name: "Parent" });
 
-    expect(records).toEqual({ items: [], exclusiveStartKey: null });
+    expect(records).toEqual({
+      items: [],
+      exclusivePrevKey: null,
+      exclusiveNextKey: null,
+    });
   });
 });

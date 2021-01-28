@@ -3,7 +3,11 @@ export default function (repository) {
     try {
       const { name } = req.params;
       const { before, after } = req.query;
-      const { items, exclusiveStartKey } = await repository.findByOrganization({
+      const {
+        items,
+        exclusivePrevKey,
+        exclusiveNextKey,
+      } = await repository.findByOrganization({
         name,
         before,
         after,
@@ -12,7 +16,8 @@ export default function (repository) {
       return res.status(200).json({
         relations: items,
         pagination: {
-          next_cursor: exclusiveStartKey,
+          prev_cursor: exclusivePrevKey,
+          next_cursor: exclusiveNextKey,
         },
       });
     } catch ({ message }) {

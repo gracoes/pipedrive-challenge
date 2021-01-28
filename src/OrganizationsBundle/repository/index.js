@@ -31,11 +31,12 @@ export default function (adapter) {
         }));
 
         const isLastPage = records.length < limit;
-        const exclusiveStartKey = isLastPage ? null : records[limit - 1].tail;
+        const exclusiveNextKey = isLastPage ? null : records[limit - 1].tail;
 
         return {
           items,
-          exclusiveStartKey,
+          exclusivePrevKey: records.length ? records[0].tail : null,
+          exclusiveNextKey,
         };
       } catch (err) {
         throw new Error(err);

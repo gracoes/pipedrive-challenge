@@ -17,7 +17,8 @@ describe("Get organizations's relations handler", () => {
               org_name: "Child 2",
             },
           ],
-          exclusiveStartKey: null,
+          exclusivePrevKey: "Child 1",
+          exclusiveNextKey: null,
         })
       ),
     };
@@ -47,6 +48,7 @@ describe("Get organizations's relations handler", () => {
             },
           ],
           pagination: {
+            prev_cursor: "Child 1",
             next_cursor: null,
           },
         })
