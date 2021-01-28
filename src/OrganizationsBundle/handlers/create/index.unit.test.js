@@ -19,11 +19,11 @@ test("it creates relations and responds with success", async () => {
   };
   const res = {
     status: jest.fn((status) => {
-      expect(status).toEqual(200);
+      expect(status).toEqual(201);
 
       return res;
     }),
-    json: jest.fn((value) => expect(value).toEqual({ message: "Success!" })),
+    json: jest.fn((value) => expect(value).toEqual({ success: true })),
   };
   await handler(req, res);
 
