@@ -2,6 +2,24 @@
 A RESTful service that enables users to create and retrieve the relations of an organization.  
 The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTER`.  
 
+## Getting Started
+### Requirements
+  * NodeJS version 14 or higher  
+### Installing
+```npm install```
+### Running
+```
+npm start
+```
+### Tests
+```
+npm test
+```
+Alternatively, you can run the tests in watch mode with:
+```
+npm run test:watch
+```
+
 ## Endpoints
 ### POST `/organization/relations`
 Create the relations of an organization.  

@@ -1,7 +1,7 @@
 {
   "name": "pipedrive-backend-challenge",
   "version": "0.0.1",
-  "description": "A RESTful service that stores and returns organizations and their relations with other organizations",
+  "description": "A RESTful service that stores and returns an organization's relations",
   "main": "index.js",
   "type": "module",
   "engines": {
