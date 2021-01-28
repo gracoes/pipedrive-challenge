@@ -4,7 +4,22 @@ The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTE
 
 ## Table of Contents
 [Getting Started](./README.md#getting-started)
-* [Requirements]((./README.md#requirements))
+  * [Requirements](./README.md#requirements)
+  * [Installing](./README.md#installing)
+  * [Running](./README.md#running)
+  * [Testing](./README.md#testing)  
+
+[Endpoints](./README.md#endpoints)
+  * [`/organization/relations`](./README.md#post-organizationrelations)
+  * [`/organization/:name/relations`](./README.md#get-organizationnamerelations)
+
+[DB Schema](./README.md#db-schema)
+  * [The Index](./README.md#the-index)
+
+[Architecture](./README.md#architecture)
+  * [Handlers](./README.md#handlers)
+  * [Repository](./README.md#repository)
+  * [Adapters](./README.md#adapters)
 
 ## Getting Started
 ### Requirements
@@ -15,7 +30,7 @@ The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTE
 ```
 npm start
 ```
-### Tests
+### Testing
 ```
 npm test
 ```
@@ -26,7 +41,7 @@ npm run test:watch
 
 ## Endpoints
 ### POST `/organization/relations`
-Create the relations of an organization.  
+Creates the relations of an organization.  
 It expects a body in JSON format with the schema
 ```json
 {
@@ -58,8 +73,8 @@ A succesful response
 More information [LINK](LINK)
 
 ### GET `organization/:name/relations`
-Retrieve the relations of the organization `:name`.  
-The relations are sorted alphabetically and capped at a maximum of 100 relations with support for pagination.  
+Retrieves the relations of the organization `:name`.  
+The relations are sorted alphabetically and paginated with a maximum of 100 relations by page.  
 An example of a succesful response.
 ```json
 {
@@ -98,3 +113,19 @@ The relations table could be in this state and no order would be guaranteed.
 ![table](./docs/db_schema_table.png)  
 However, the index would be like this, guaranteeing the alphabetical order.  
 ![index](./docs/db_schema_index.png)
+
+## Architecture
+This project follows the current code architecure:  
+
+![architecture](./docs/code_design.png)
+
+### Handlers
+Handlers are the first and last point of contact with the client, they are responsible for validating the client's request and responding adequately.  
+Handlers only interact with the repository.
+
+### Repository
+Repository provide the access paterns for our usecases.  
+It uses an *adapter* to interact with the storage layer.
+
+### Adapters
+An adapter is an abstraction layer over the actual storage used be it SQL, NoSQL or even in-memory.
