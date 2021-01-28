@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 
 import getHandler from "../index.js";
+import RelationshipType from "../../../enums/relationship-type.js";
 
 describe("Get organizations's relations handler", () => {
   test("it returns with success relations for organization 'Parent'", async () => {
@@ -9,11 +10,11 @@ describe("Get organizations's relations handler", () => {
         Promise.resolve({
           items: [
             {
-              relationship_type: "child",
+              relationship_type: RelationshipType.CHILD,
               org_name: "Child 1",
             },
             {
-              relationship_type: "child",
+              relationship_type: RelationshipType.CHILD,
               org_name: "Child 2",
             },
           ],
@@ -39,11 +40,11 @@ describe("Get organizations's relations handler", () => {
         expect(value).toEqual({
           relations: [
             {
-              relationship_type: "child",
+              relationship_type: RelationshipType.CHILD,
               org_name: "Child 1",
             },
             {
-              relationship_type: "child",
+              relationship_type: RelationshipType.CHILD,
               org_name: "Child 2",
             },
           ],

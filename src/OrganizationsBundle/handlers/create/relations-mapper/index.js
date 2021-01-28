@@ -1,10 +1,12 @@
-export default function mapRelations({ org_name: orgName, daughters }) {
+import RelationshipType from "../../../enums/relationship-type.js";
+
+export default function mapRelations({ org_name, daughters }) {
   if (!daughters) {
     return [];
   }
 
-  const parents = mapParents(orgName, daughters);
-  const childs = mapChildren(orgName, daughters);
+  const parents = mapParents(org_name, daughters);
+  const childs = mapChildren(org_name, daughters);
   const siblings = mapSiblings(daughters);
   const relations = daughters.flatMap((child) => mapRelations(child));
 
@@ -15,7 +17,7 @@ function mapParents(parent, children) {
   return children.map(({ org_name }) => ({
     head: parent,
     tail: org_name,
-    type: "parent",
+    type: RelationshipType.PARENT,
   }));
 }
 
@@ -23,7 +25,7 @@ function mapChildren(parent, children) {
   return children.map(({ org_name }) => ({
     head: org_name,
     tail: parent,
-    type: "daughter",
+    type: RelationshipType.CHILD,
   }));
 }
 
@@ -34,7 +36,7 @@ function mapSiblings(children) {
       .map(({ org_name: org }) => ({
         head: org_name,
         tail: org,
-        type: "sister",
+        type: RelationshipType.SIBLING,
       }))
   );
 }
