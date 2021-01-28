@@ -1,4 +1,4 @@
-import RelationshipType from "../../../enums/relationship-types.js";
+import RelationshipType from "../../../enums/relationship-type.js";
 
 export default function mapRelations({ org_name, daughters }) {
   if (!daughters) {

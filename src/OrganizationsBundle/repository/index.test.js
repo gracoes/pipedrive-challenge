@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-import RelationshipType from "../enums/relationship-types.js";
+import RelationshipType from "../enums/relationship-type.js";
 import Repository from "./index.js";
 
 describe("Organizations Repository", () => {

@@ -1,5 +1,5 @@
 import mapRelations from "./index.js";
-import RelationshipType from "../../../enums/relationship-types.js";
+import RelationshipType from "../../../enums/relationship-type.js";
 
 describe("Relations Mapper", () => {
   test("maps relations with max depth of 0", () => {

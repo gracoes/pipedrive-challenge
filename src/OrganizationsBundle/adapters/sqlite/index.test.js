@@ -3,7 +3,7 @@ import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
 import Adapter from "./index.js";
-import RelationshipType from "../../enums/relationship-types.js";
+import RelationshipType from "../../enums/relationship-type.js";
 
 describe("SQLite Adapter", () => {
   let db;

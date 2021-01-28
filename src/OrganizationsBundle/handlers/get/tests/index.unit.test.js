@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 
 import getHandler from "../index.js";
-import RelationshipType from "../../../enums/relationship-types.js";
+import RelationshipType from "../../../enums/relationship-type.js";
 
 describe("Get organizations's relations handler", () => {
   test("it returns with success relations for organization 'Parent'", async () => {
