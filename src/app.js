@@ -13,6 +13,7 @@ export default function ({ repository }) {
   server.get("/organization/:name/relations", getHandler(repository));
 
   server.listen(8080, () => {
+    // eslint-disable-next-line no-console
     console.log("Listening on port 8080");
   });
 }
