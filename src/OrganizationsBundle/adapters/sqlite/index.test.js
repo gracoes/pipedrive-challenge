@@ -128,28 +128,6 @@ describe("SQLite Adapter", () => {
     ]);
   });
 
-  test("it queries records by name with 'before' pagination", async () => {
-    const adapter = await Adapter(db);
-
-    for (let idx = 1; idx < 10; idx++) {
-      await db.exec(
-        `INSERT INTO relations VALUES ('Parent', 'Child ${idx}', 'parent')`
-      );
-    }
-
-    const records = await adapter.queryByNamePaginated({
-      name: "Parent",
-      after: "Child 3",
-      before: "Child 6",
-      limit: 2,
-    });
-
-    expect(records).toEqual([
-      { head: "Parent", tail: "Child 4", type: RelationshipType.PARENT },
-      { head: "Parent", tail: "Child 5", type: RelationshipType.PARENT },
-    ]);
-  });
-
   test("it queries records by name and returns them sorted alphabetically", async () => {
     const adapter = await Adapter(db);
 

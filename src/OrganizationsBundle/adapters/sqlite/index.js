@@ -34,14 +34,7 @@ export default async function Adapter(dbClient) {
     );
   }
 
-  function prepareQueryByName({ name, before = null, after = null, limit }) {
-    if (before && after) {
-      return dbClient.prepare(
-        "SELECT * FROM relations WHERE head = :name AND tail < :before AND tail > :after LIMIT :limit",
-        [name, before, after, limit]
-      );
-    }
-
+  function prepareQueryByName({ name, after = null, limit }) {
     if (after) {
       return dbClient.prepare(
         "SELECT * FROM relations WHERE head = :name AND tail > :after LIMIT :limit",
@@ -55,13 +48,8 @@ export default async function Adapter(dbClient) {
     );
   }
 
-  async function queryByNamePaginated({
-    name,
-    before = null,
-    after = null,
-    limit,
-  }) {
-    const query = await prepareQueryByName({ name, before, after, limit });
+  async function queryByNamePaginated({ name, after = null, limit }) {
+    const query = await prepareQueryByName({ name, after, limit });
 
     return query.all();
   }
