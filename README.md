@@ -93,12 +93,23 @@ An example of a succesful response.
     }
   ],
   "pagination": {
-    "prev_cursor": null,
+    "prev_cursor": "Child 1",
     "next_cursor": "Parent"
   }
 }
 ```
-More information [LINK](LINK)
+#### Pagination
+This endpoint supports pagination through cursors, meaning clients can only request the *previous* and *next* page and not a specific page.  
+The server responds with a `pagination` property that contains the name of the first relation, in `prev_cursor`, and the name of the last relation, in `next_cursor`. The value of `next_cursor` will be `null` when there are no more pages.    
+Clients move between pages by sending two query parameters: `before` and `after`.  
+The clients must use `after` for fetching the next page and **both** `before` and `after` to fetch the previous page.  
+##### Example
+###### Next Page
+Fetching the next page is straightfoward, the client sends the `next_cursor` value in the `after` query parameter.  
+`GET /organization/:name/relations?after=<next_cursor>`.  
+###### Previous Page
+Fetching the previous page is more trickier, the client would need to save the previous page `prev_cursor` value, send it in the `after` parameter while also sending the current page `prev_cursor` value in the `before` parameter.   
+`GET /organization/:name/relations?before=<current_page:prev_cursor>&after=<last_page:prev_cursor>`.
 
 ## DB Schema
 ![schema](./docs/db_schema.png)  
@@ -113,7 +124,7 @@ Since retrieving relations by alphabetical order needs to be supported, an index
 The relations table could be in this state and no order would be guaranteed.  
 
 ![table](./docs/db_schema_table.png)  
- 
+
 However, the index would be like this, guaranteeing the alphabetical order.  
 
 ![index](./docs/db_schema_index.png)
