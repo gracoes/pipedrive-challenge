@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 
+import RelationshipType from "../enums/relationship-types.js";
 import Repository from "./index.js";
 
 describe("Organizations Repository", () => {
@@ -8,7 +9,7 @@ describe("Organizations Repository", () => {
     const repository = Repository(adapter);
 
     const res = await repository.saveRelations([
-      { head: "Parent", tail: "Child 1", type: "parent" },
+      { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
     ]);
 
     expect(res).toBeTruthy();
@@ -22,7 +23,7 @@ describe("Organizations Repository", () => {
           {
             head: "Parent",
             tail: "Child 1",
-            type: "child",
+            type: RelationshipType.CHILD,
           },
         ])
       ),
@@ -33,7 +34,7 @@ describe("Organizations Repository", () => {
     expect(records).toEqual({
       items: [
         {
-          relationship_type: "child",
+          relationship_type: RelationshipType.CHILD,
           org_name: "Child 1",
         },
       ],

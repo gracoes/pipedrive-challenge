@@ -3,6 +3,7 @@ import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
 import Adapter from "./index.js";
+import RelationshipType from "../../enums/relationship-types.js";
 
 describe("SQLite Adapter", () => {
   let db;
@@ -44,13 +45,17 @@ describe("SQLite Adapter", () => {
     const adapter = await Adapter(db);
 
     const res = await adapter.batchInsert([
-      { head: "Parent", tail: "Child 1", type: "parent" },
+      { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
     ]);
 
     const row = await db.get("SELECT * FROM relations");
 
     expect(res).toBeTruthy();
-    expect(row).toEqual({ head: "Parent", tail: "Child 1", type: "parent" });
+    expect(row).toEqual({
+      head: "Parent",
+      tail: "Child 1",
+      type: RelationshipType.PARENT,
+    });
   });
 
   test("inserting multiple records is atomic", async () => {
@@ -68,8 +73,8 @@ describe("SQLite Adapter", () => {
     const adapter = await Adapter(mockDb);
     const insertMany = () =>
       adapter.batchInsert([
-        { head: "Parent", tail: "Child 1", type: "parent" },
-        { head: "Parent", tail: "Child 2", type: "parent" },
+        { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
+        { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
       ]);
 
     await expect(insertMany).rejects.toThrow("Something went wrong!");
@@ -95,8 +100,8 @@ describe("SQLite Adapter", () => {
     });
 
     expect(records).toEqual([
-      { head: "Parent", tail: "Child 1", type: "parent" },
-      { head: "Parent", tail: "Child 2", type: "parent" },
+      { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
     ]);
   });
 
@@ -116,10 +121,10 @@ describe("SQLite Adapter", () => {
     });
 
     expect(records).toEqual([
-      { head: "Parent", tail: "Child 6", type: "parent" },
-      { head: "Parent", tail: "Child 7", type: "parent" },
-      { head: "Parent", tail: "Child 8", type: "parent" },
-      { head: "Parent", tail: "Child 9", type: "parent" },
+      { head: "Parent", tail: "Child 6", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 7", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 8", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 9", type: RelationshipType.PARENT },
     ]);
   });
 
@@ -140,8 +145,8 @@ describe("SQLite Adapter", () => {
     });
 
     expect(records).toEqual([
-      { head: "Parent", tail: "Child 4", type: "parent" },
-      { head: "Parent", tail: "Child 5", type: "parent" },
+      { head: "Parent", tail: "Child 4", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 5", type: RelationshipType.PARENT },
     ]);
   });
 
@@ -164,9 +169,9 @@ describe("SQLite Adapter", () => {
     });
 
     expect(records).toEqual([
-      { head: "Parent", tail: "Child 1", type: "parent" },
-      { head: "Parent", tail: "Child 2", type: "parent" },
-      { head: "Parent", tail: "Child 3", type: "parent" },
+      { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
+      { head: "Parent", tail: "Child 3", type: RelationshipType.PARENT },
     ]);
   });
 });

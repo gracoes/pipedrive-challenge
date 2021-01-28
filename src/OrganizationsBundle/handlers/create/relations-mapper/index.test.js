@@ -1,4 +1,5 @@
 import mapRelations from "./index.js";
+import RelationshipType from "../../../enums/relationship-types.js";
 
 describe("Relations Mapper", () => {
   test("maps relations with max depth of 0", () => {
@@ -27,20 +28,20 @@ describe("Relations Mapper", () => {
 
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Parent", tail: "Child 1", type: "parent" },
-        { head: "Parent", tail: "Child 2", type: "parent" },
+        { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
+        { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Parent", type: "daughter" },
-        { head: "Child 2", tail: "Parent", type: "daughter" },
+        { head: "Child 1", tail: "Parent", type: RelationshipType.CHILD },
+        { head: "Child 2", tail: "Parent", type: RelationshipType.CHILD },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Child 2", type: "sister" },
-        { head: "Child 2", tail: "Child 1", type: "sister" },
+        { head: "Child 1", tail: "Child 2", type: RelationshipType.SIBLING },
+        { head: "Child 2", tail: "Child 1", type: RelationshipType.SIBLING },
       ])
     );
   });
@@ -70,26 +71,34 @@ describe("Relations Mapper", () => {
 
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Parent", tail: "Child 1", type: "parent" },
-        { head: "Parent", tail: "Child 2", type: "parent" },
-        { head: "Child 1", tail: "Child 1.1", type: "parent" },
-        { head: "Child 1", tail: "Child 1.2", type: "parent" },
+        { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
+        { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
+        { head: "Child 1", tail: "Child 1.1", type: RelationshipType.PARENT },
+        { head: "Child 1", tail: "Child 1.2", type: RelationshipType.PARENT },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Parent", type: "daughter" },
-        { head: "Child 2", tail: "Parent", type: "daughter" },
-        { head: "Child 1.1", tail: "Child 1", type: "daughter" },
-        { head: "Child 1.2", tail: "Child 1", type: "daughter" },
+        { head: "Child 1", tail: "Parent", type: RelationshipType.CHILD },
+        { head: "Child 2", tail: "Parent", type: RelationshipType.CHILD },
+        { head: "Child 1.1", tail: "Child 1", type: RelationshipType.CHILD },
+        { head: "Child 1.2", tail: "Child 1", type: RelationshipType.CHILD },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Child 2", type: "sister" },
-        { head: "Child 2", tail: "Child 1", type: "sister" },
-        { head: "Child 1.1", tail: "Child 1.2", type: "sister" },
-        { head: "Child 1.2", tail: "Child 1.1", type: "sister" },
+        { head: "Child 1", tail: "Child 2", type: RelationshipType.SIBLING },
+        { head: "Child 2", tail: "Child 1", type: RelationshipType.SIBLING },
+        {
+          head: "Child 1.1",
+          tail: "Child 1.2",
+          type: RelationshipType.SIBLING,
+        },
+        {
+          head: "Child 1.2",
+          tail: "Child 1.1",
+          type: RelationshipType.SIBLING,
+        },
       ])
     );
   });
