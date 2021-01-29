@@ -2,14 +2,13 @@ export default function (repository) {
   return async (req, res) => {
     try {
       const { name } = req.params;
-      const { before, after } = req.query;
+      const { after } = req.query;
       const {
         items,
         exclusivePrevKey,
         exclusiveNextKey,
       } = await repository.findByOrganization({
         name,
-        before,
         after,
       });
 

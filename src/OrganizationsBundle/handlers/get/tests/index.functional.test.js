@@ -86,8 +86,7 @@ describe("Get organizations's relations handler - Functional", () => {
     const handler = getHandler(repository);
     const req = {
       query: {
-        before: "Basimah",
-        after: "Antonia",
+        after: "Alessandra",
       },
       params: {
         name: "Parent",
@@ -100,9 +99,9 @@ describe("Get organizations's relations handler - Functional", () => {
         return res;
       }),
       json: jest.fn(({ relations }) => {
-        expect(relations).toHaveLength(50);
-        expect(relations[0].org_name).toEqual("April");
-        expect(relations[49].org_name).toEqual("Basilia");
+        expect(relations).toHaveLength(100);
+        expect(relations[0].org_name).toEqual("Alethea");
+        expect(relations[99].org_name).toEqual("Basilia");
       }),
     };
 
