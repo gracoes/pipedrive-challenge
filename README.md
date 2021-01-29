@@ -165,7 +165,7 @@ Handlers only interact with the repository.
 
 ### Repository
 Repository provide the access paterns for our usecases.  
-It uses an *adapter* to interact with the storage layer.
+It uses an *adapter* to interact with the storage layer.  
 The repository must fulfill this contract:
 ```ts
 interface {
@@ -176,7 +176,7 @@ interface {
    * 
    * @throws Error - a JS Error object
    */  
-  batchInsert(relations: array): boolean
+  batchInsert(relations: array): boolean;
 
   /**
    * @param request - an object like { name: string, after: string, limit: int }
@@ -185,9 +185,33 @@ interface {
    * 
    * @throws Error - a JS Error object
    */ 
-  findByOrganization(request: object): array
+  findByOrganization(request: object): array;
 }
 ```
 
 ### Adapters
-An adapter is an abstraction layer over the actual storage used be it SQL, NoSQL or even in-memory.
+An adapter is an abstraction layer over the actual storage used be it SQL, NoSQL or even in-memory.  
+An adapter must fulfill this contract:  
+```ts
+interface {
+  /**
+   * This operation MUST be atomic, meaning if one insert fails all the others are rolled back.
+   * 
+   * @param records - an array of record objects { head: string, tail: string, type: string }
+   * 
+   * @returns boolean - indication of success
+   * 
+   * @throws Error - a JS Error object
+   */  
+  batchInsert(records: array): boolean;
+
+  /**
+   * @param request - an object like { name: string, after: string, limit: int }
+   * 
+   * @returns array - an array of records
+   * 
+   * @throws Error - a JS Error object
+   */ 
+  queryByNamePaginated(request: object): array;
+}
+```
