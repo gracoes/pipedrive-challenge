@@ -13,12 +13,14 @@ export default function (adapter) {
     },
     findByOrganization: async ({
       name,
+      before = null,
       after = null,
       limit = DEFAULT_MAX_ROWS_PER_PAGE,
     }) => {
       try {
         const records = await adapter.queryByNamePaginated({
           name,
+          before,
           after,
           limit,
         });

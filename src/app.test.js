@@ -323,16 +323,48 @@ describe("Functional tests", () => {
 
       await supertest(server)
         .get("/organization/Parent/relations")
-        .query({ limit: 5, after: "Adamina" })
+        .query({ limit: 5, before: "Ailani" })
         .expect(200, {
           relations: [
-            { relationship_type: "parent", org_name: "Adara" },
-            { relationship_type: "parent", org_name: "Addie" },
-            { relationship_type: "parent", org_name: "Adelaide" },
-            { relationship_type: "parent", org_name: "Adele" },
-            { relationship_type: "parent", org_name: "Adena" },
+            { relationship_type: "parent", org_name: "Aesha" },
+            { relationship_type: "parent", org_name: "Agatha" },
+            { relationship_type: "parent", org_name: "Aggie" },
+            { relationship_type: "parent", org_name: "Agnes" },
+            { relationship_type: "parent", org_name: "Aida" },
           ],
-          pagination: { prev_cursor: "Adara", next_cursor: "Adena" },
+          pagination: { prev_cursor: "Aesha", next_cursor: "Aida" },
+        });
+    });
+
+    test("it handles page navigation", async () => {
+      const server = app({ repository });
+
+      await supertest(server)
+        .get("/organization/Parent/relations")
+        .query({ limit: 5, after: "Aida" })
+        .expect(200, {
+          relations: [
+            { relationship_type: "parent", org_name: "Ailani" },
+            { relationship_type: "parent", org_name: "Aileen" },
+            { relationship_type: "parent", org_name: "Ailsa" },
+            { relationship_type: "parent", org_name: "Aimee" },
+            { relationship_type: "parent", org_name: "Airlia" },
+          ],
+          pagination: { prev_cursor: "Ailani", next_cursor: "Airlia" },
+        });
+
+      await supertest(server)
+        .get("/organization/Parent/relations")
+        .query({ limit: 5, before: "Ailani" })
+        .expect(200, {
+          relations: [
+            { relationship_type: "parent", org_name: "Aesha" },
+            { relationship_type: "parent", org_name: "Agatha" },
+            { relationship_type: "parent", org_name: "Aggie" },
+            { relationship_type: "parent", org_name: "Agnes" },
+            { relationship_type: "parent", org_name: "Aida" },
+          ],
+          pagination: { prev_cursor: "Aesha", next_cursor: "Aida" },
         });
     });
 
