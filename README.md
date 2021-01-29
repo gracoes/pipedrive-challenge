@@ -166,6 +166,28 @@ Handlers only interact with the repository.
 ### Repository
 Repository provide the access paterns for our usecases.  
 It uses an *adapter* to interact with the storage layer.
+The repository must fulfill this contract:
+```ts
+interface {
+  /**
+   * @param relations - an array of relations objects { head: string, tail: string, type: string }
+   * 
+   * @returns boolean - indication of success
+   * 
+   * @throws Error - a JS Error object
+   */  
+  batchInsert(relations: array): boolean
+
+  /**
+   * @param request - an object like { name: string, after: string, limit: int }
+   * 
+   * @returns array - an array of objects { items: array, exclusivePrevKey: string, exclusiveStartKey: string }  
+   * 
+   * @throws Error - a JS Error object
+   */ 
+  findByOrganization(request: object): array
+}
+```
 
 ### Adapters
 An adapter is an abstraction layer over the actual storage used be it SQL, NoSQL or even in-memory.
