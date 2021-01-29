@@ -95,7 +95,6 @@ A HTTP response with status 500 (Internal Server Error) and the body:
 }
 ```
 
-
 ### GET `organization/:name/relations`
 Retrieves the relations of the organization `:name`.  
 The relations are sorted alphabetically and paginated with a maximum of 100 relations by page.  
@@ -126,11 +125,12 @@ The relations are sorted alphabetically and paginated with a maximum of 100 rela
 This endpoint takes two query parameters: `limit` and `after`.  
 The `limit` parameter indicates the maximum number of results the server will return, it defaults to 100.
 
-
 #### Pagination
 This endpoint supports cursor based pagination, which means clients can only request the *previous* and *next* page and not a specific page.  
-The server responds with a `pagination` property that contains the name of the first relation, in `prev_cursor`, and the name of the last relation, in `next_cursor`. The value of `next_cursor` will be `null` when there are no more pages.    
-Clients move between pages by sending the query parameter: `after`.  
+The server responds with a `pagination` property that contains the name of the first relation, in `prev_cursor`, and the name of the last relation, in `next_cursor`.  
+The value of `next_cursor` will be `null` when there are no more pages.  
+Clients move between pages by sending the query parameter: `after`, this paremeter is exclusive, meaning that the value of `after` will not enter the result set.  
+
 ##### Example
 ##### First Page
 `GET organization/:name/relations`
