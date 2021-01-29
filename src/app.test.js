@@ -1,21 +1,17 @@
-import { open } from "sqlite";
-import sqlite3 from "sqlite3";
 import supertest from "supertest";
 
 import Adapter from "./OrganizationsBundle/adapters/sqlite/index.js";
 import app from "./app.js";
-import fixtures from "./fixtures/names.js";
+import fixtures from "./Tests/fixtures/names.js";
+import InMemorySqliteClient from "./Infrastructure/in-memory-sqlite-client.js";
 import Repository from "./OrganizationsBundle/repository/index.js";
 
 describe("Functional tests", () => {
   let db;
   let repository;
   beforeAll(async () => {
-    db = await open({
-      filename: ":memory:",
-      driver: sqlite3.Database,
-    });
-    const adapter = await Adapter(db);
+    db = await InMemorySqliteClient.init();
+    const adapter = await Adapter.init(db);
     repository = Repository(adapter);
   });
 
