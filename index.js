@@ -1,7 +1,7 @@
+import { createTerminus } from "@godaddy/terminus";
+import http from "http";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
-import http from "http";
-import { createTerminus } from "@godaddy/terminus";
 
 import app from "./src/app.js";
 import Repository from "./src/OrganizationsBundle/repository/index.js";
