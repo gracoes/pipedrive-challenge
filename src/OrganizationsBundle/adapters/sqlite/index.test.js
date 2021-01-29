@@ -1,17 +1,13 @@
 import { jest } from "@jest/globals";
-import { open } from "sqlite";
-import sqlite3 from "sqlite3";
 
 import Adapter from "./index.js";
+import InMemorySqliteClient from "../../../Infrastructure/in-memory-sqlite-client.js";
 import RelationshipType from "../../enums/relationship-type.js";
 
 describe("SQLite Adapter", () => {
   let db;
   beforeAll(async () => {
-    db = await open({
-      filename: ":memory:",
-      driver: sqlite3.Database,
-    });
+    db = await InMemorySqliteClient.init();
   });
 
   afterAll(async () => {
@@ -24,7 +20,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it creates relations table when initiated", async () => {
-    await Adapter(db);
+    await Adapter.init(db);
 
     const records = await db.all("SELECT * FROM relations");
 
@@ -32,7 +28,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it creates index on relations table when initiated", async () => {
-    await Adapter(db);
+    await Adapter.init(db);
 
     const records = await db.all(
       "SELECT * FROM sqlite_master WHERE type = 'index' AND name = 'head_tail'"
@@ -42,7 +38,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it inserts multiple records", async () => {
-    const adapter = await Adapter(db);
+    const adapter = await Adapter.init(db);
 
     const res = await adapter.batchInsert([
       { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
@@ -70,7 +66,7 @@ describe("SQLite Adapter", () => {
           Promise.reject({ message: "Something went wrong!" })
         ),
     };
-    const adapter = await Adapter(mockDb);
+    const adapter = await Adapter.init(mockDb);
     const insertMany = () =>
       adapter.batchInsert([
         { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
@@ -85,7 +81,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it queries records by name", async () => {
-    const adapter = await Adapter(db);
+    const adapter = await Adapter.init(db);
 
     await db.exec(
       "INSERT INTO relations VALUES ('Parent', 'Child 2', 'parent')"
@@ -106,7 +102,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it queries records by name with 'after' pagination", async () => {
-    const adapter = await Adapter(db);
+    const adapter = await Adapter.init(db);
 
     for (let idx = 1; idx < 10; idx++) {
       await db.exec(
@@ -129,7 +125,7 @@ describe("SQLite Adapter", () => {
   });
 
   test("it queries records by name and returns them sorted alphabetically", async () => {
-    const adapter = await Adapter(db);
+    const adapter = await Adapter.init(db);
 
     await db.exec(
       "INSERT INTO relations VALUES ('Parent', 'Child 2', 'parent')"
