@@ -21,6 +21,10 @@ The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTE
   * [Repository](./README.md#repository)
   * [Adapters](./README.md#adapters)
 
+[Benchmarks](./README.md#benchmarks)
+  * [Inserting](./README.md#inserting)
+  * [Fetching](./README.md#fetching)
+
 ## Getting Started
 ### Requirements
   * NodeJS version 14 or higher  
@@ -223,3 +227,9 @@ interface {
   queryByNamePaginated(request: object): array;
 }
 ```
+
+## Benchmarks
+### Inserting (in-memory DB)
+| 10  | 100  | 1000 | 10000 | 100000 | 1000000 |
+| :-: | :--: | :--: | :---: | :----: | :-----: |
+| 3ms | 24ms | 69ms | 695ms | 6s     | 57s     |
