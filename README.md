@@ -10,8 +10,8 @@ The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTE
   * [Testing](./README.md#testing)  
 
 [Endpoints](./README.md#endpoints)
-  * [`/organization/relations`](./README.md#post-organizationrelations)
-  * [`/organization/:name/relations`](./README.md#get-organizationnamerelations)
+  * [POST `/organization/relations`](./README.md#post-organizationrelations)
+  * [GET `/organization/:name/relations`](./README.md#get-organizationnamerelations)
 
 [DB Schema](./README.md#db-schema)
   * [The Index](./README.md#the-index)
@@ -42,7 +42,7 @@ npm run test:watch
 ## Endpoints
 ### POST `/organization/relations`
 Creates the relations of an organization.  
-It expects a body in JSON format with the schema
+#### Request Body
 ```json
 {
   "org_name": "<parent>",
@@ -64,18 +64,42 @@ It expects a body in JSON format with the schema
   ]
 }
 ```
-A succesful response
+#### Success Response
 ```json
 {
   "success": true
 }
 ```
-More information [LINK](LINK)
+
+#### Error Response by omission of `org_name`
+A HTTP response with status 400 (BAD REQUEST) and the body:
+```json
+{
+  "message": "Property 'org_name' must be present"
+}
+```
+
+#### Error Response by omission of `daughters`
+A HTTP response with status 400 (BAD REQUEST) and the body:
+```json
+{
+  "message": "Organization '<org_name>' must have daughters"
+}
+```
+
+#### Error Response by server failure
+A HTTP response with status 500 (Internal Server Error) and the body:
+```json
+{
+  "message": "<message>"
+}
+```
+
 
 ### GET `organization/:name/relations`
 Retrieves the relations of the organization `:name`.  
 The relations are sorted alphabetically and paginated with a maximum of 100 relations by page.  
-An example of a succesful response.
+#### Success Response
 ```json
 {
   "relations": [
