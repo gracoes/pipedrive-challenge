@@ -5,7 +5,7 @@ import app from "./src/app.js";
 import Repository from "./src/OrganizationsBundle/repository/index.js";
 import SqlAdapter from "./src/OrganizationsBundle/adapters/sqlite/index.js";
 
-(async function () {
+(async () => {
   const db = await open({
     filename: ":memory:",
     driver: sqlite3.Database,
@@ -17,6 +17,6 @@ import SqlAdapter from "./src/OrganizationsBundle/adapters/sqlite/index.js";
   const server = app({ repository });
 
   server.listen(8080, () => {
-    console.log("Listening on localhost:8080");
+    console.log("Listening on http://localhost:8080");
   });
 })();
