@@ -17,6 +17,7 @@ import SqlAdapter from "./src/OrganizationsBundle/adapters/sqlite/index.js";
   const repository = Repository(adapter);
 
   const server = http.createServer(app({ repository }));
+
   const onSignal = () => {
     console.log("\nServer starting cleanup...");
 
