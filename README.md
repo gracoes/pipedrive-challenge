@@ -14,7 +14,7 @@ The possible relations an organization can have are `PARENT`, `DAUGHTER`, `SISTE
   * [GET `/organization/:name/relations`](./README.md#get-organizationnamerelations)
 
 [DB Schema](./README.md#db-schema)
-  * [The Index](./README.md#the-index)
+  * [The Indices](./README.md#the-indices)
 
 [Architecture](./README.md#architecture)
   * [Handlers](./README.md#handlers)
@@ -122,40 +122,43 @@ The relations are sorted alphabetically and paginated with a maximum of 100 rela
 }
 ```
 #### Query Parameters
-This endpoint takes two query parameters: `limit` and `after`.  
-The `limit` parameter indicates the maximum number of results the server will return, it defaults to 100.
+This endpoint takes three query parameters: `limit`, which specifies the maximum number of results, and `before` and `after` which are used to navigate through the pages of results.  
+The `limit` has a default value of 100.  
 
 #### Pagination
 This endpoint supports cursor based pagination, which means clients can only request the *previous* and *next* page and not a specific page.  
 The server responds with a `pagination` property that contains the name of the first relation, in `prev_cursor`, and the name of the last relation, in `next_cursor`.  
 The value of `next_cursor` will be `null` when there are no more pages.  
-Clients move between pages by sending the query parameter: `after`, this paremeter is exclusive, meaning that the value of `after` will not enter the result set.  
+Clients move between pages by sending either the query parameter: `before` **OR** `after`, depending if they want the previous or next page respectively.  
+Both parameters are exclusive, which means their values won't appear on the result set.
 
 ##### Example
 ##### First Page
 `GET organization/:name/relations`
 ###### Next Page
-Fetching the next page is straightfoward, the client sends `next_cursor` as the `after` query parameter value.  
+To fetch the next page, the client sends `next_cursor` as the `after` query parameter value.  
 `GET /organization/:name/relations?after=<next_cursor>`.  
 ###### Previous Page
-Fetching the previous page is more trickier, the client would need to save the previous page `prev_cursor` value and send it as the `after` query parameter value.   
-`GET /organization/:name/relations?after=<prev_page:prev_cursor>`.
+To fetch the previous page sends `previous_cursor` as the `before` query parameter value.
+`GET /organization/:name/relations?before=<prev_cursor>`.
 
 ## DB Schema
 ![schema](./docs/db_schema.png)  
 
-The service is supported by a `relations` table and an associated index.  
+The service is supported by a `relations` table and a `relations_desc` table, with each one having an associated index.  
 Each row of `relations` can be seen as an edge of a graph where the column `head` represents the start vertice, the column `tail` represents the end vertice, and the column `type` representing the type of relationship.  
 
-### The index
-Since retrieving relations by alphabetical order needs to be supported, an index was created on the `relations` table where the `head` column acts as the "primary key" and the `tail` column acts as the "sort key".  This can be seen as an `ORDER BY` done at insertion time instead of query time.  
+### The indices
+Since retrieving relations by alphabetical order needs to be supported, two indices were created, one on the `relations` and the other on `relations_desc` table.  
+The indices are schematically the same, where the `head` column acts as the "primary key" and the `tail` column acts as the "sort key". The only difference is that one index is in ascending order and the other is in descending order.  
+This can be seen as an `ORDER BY` done at insertion time instead of query time.    
 
 **Example**  
 The relations table could be in this state and no order would be guaranteed if we retrieved the rows.  
 
 ![table](./docs/db_schema_table.png)  
 
-However, the index would be like this, guaranteeing alphabetical order.  
+However, the indices would be like this, guaranteeing both ascending and desceding alphabetical order.  
 
 ![index](./docs/db_schema_index.png)
 
@@ -184,7 +187,7 @@ interface {
   batchInsert(relations: array): boolean;
 
   /**
-   * @param request - an object like { name: string, after: string, limit: int }
+   * @param request - an object like { name: string, before: string, after: string, limit: int }
    * 
    * @returns array - an array of objects { items: array, exclusivePrevKey: string, exclusiveStartKey: string }  
    * 
@@ -211,7 +214,7 @@ interface {
   batchInsert(records: array): boolean;
 
   /**
-   * @param request - an object like { name: string, after: string, limit: int }
+   * @param request - an object like { name: string, before: string, after: string, limit: int }
    * 
    * @returns array - an array of records
    * 
