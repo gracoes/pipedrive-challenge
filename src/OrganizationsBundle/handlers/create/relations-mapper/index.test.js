@@ -28,14 +28,14 @@ describe("Relations Mapper", () => {
 
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
-        { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
+        { head: "Parent", tail: "Child 1", type: RelationshipType.CHILD },
+        { head: "Parent", tail: "Child 2", type: RelationshipType.CHILD },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Parent", type: RelationshipType.CHILD },
-        { head: "Child 2", tail: "Parent", type: RelationshipType.CHILD },
+        { head: "Child 1", tail: "Parent", type: RelationshipType.PARENT },
+        { head: "Child 2", tail: "Parent", type: RelationshipType.PARENT },
       ])
     );
     expect(relations).toEqual(
@@ -71,18 +71,18 @@ describe("Relations Mapper", () => {
 
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Parent", tail: "Child 1", type: RelationshipType.PARENT },
-        { head: "Parent", tail: "Child 2", type: RelationshipType.PARENT },
-        { head: "Child 1", tail: "Child 1.1", type: RelationshipType.PARENT },
-        { head: "Child 1", tail: "Child 1.2", type: RelationshipType.PARENT },
+        { head: "Parent", tail: "Child 1", type: RelationshipType.CHILD },
+        { head: "Parent", tail: "Child 2", type: RelationshipType.CHILD },
+        { head: "Child 1", tail: "Child 1.1", type: RelationshipType.CHILD },
+        { head: "Child 1", tail: "Child 1.2", type: RelationshipType.CHILD },
       ])
     );
     expect(relations).toEqual(
       expect.arrayContaining([
-        { head: "Child 1", tail: "Parent", type: RelationshipType.CHILD },
-        { head: "Child 2", tail: "Parent", type: RelationshipType.CHILD },
-        { head: "Child 1.1", tail: "Child 1", type: RelationshipType.CHILD },
-        { head: "Child 1.2", tail: "Child 1", type: RelationshipType.CHILD },
+        { head: "Child 1", tail: "Parent", type: RelationshipType.PARENT },
+        { head: "Child 2", tail: "Parent", type: RelationshipType.PARENT },
+        { head: "Child 1.1", tail: "Child 1", type: RelationshipType.PARENT },
+        { head: "Child 1.2", tail: "Child 1", type: RelationshipType.PARENT },
       ])
     );
     expect(relations).toEqual(

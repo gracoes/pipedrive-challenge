@@ -8,11 +8,11 @@ export default function ({ repository }) {
 
   server.use(express.json());
 
-  server.get("/ping", (_, res) => res.json({ message: "Hello World" }, 200));
+  server.get("/ping", (_, res) =>
+    res.status(200).json({ message: "Hello World!" })
+  );
   server.post("/organization/relations", createHandler(repository));
   server.get("/organization/:name/relations", getHandler(repository));
 
-  server.listen(8080, () => {
-    console.log("Listening on port 8080");
-  });
+  return server;
 }

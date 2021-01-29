@@ -2,7 +2,7 @@ export default function (repository) {
   return async (req, res) => {
     try {
       const { name } = req.params;
-      const { after } = req.query;
+      const { after, limit } = req.query;
       const {
         items,
         exclusivePrevKey,
@@ -10,6 +10,7 @@ export default function (repository) {
       } = await repository.findByOrganization({
         name,
         after,
+        limit,
       });
 
       return res.status(200).json({

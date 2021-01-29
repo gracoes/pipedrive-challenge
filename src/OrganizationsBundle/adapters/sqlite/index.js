@@ -1,6 +1,14 @@
 export default async function Adapter(dbClient) {
   await dbClient.exec(
-    "CREATE TABLE IF NOT EXISTS relations (head TEXT, tail TEXT, type TEXT, UNIQUE (head,tail,type))"
+    `
+     CREATE TABLE 
+     IF NOT EXISTS relations (
+       head TEXT,
+       tail TEXT,
+       type TEXT,
+       UNIQUE(head, tail, type)
+    )
+    `
   );
 
   await dbClient.exec(
@@ -29,7 +37,10 @@ export default async function Adapter(dbClient) {
 
   function prepareInsert({ head, tail, type }) {
     return dbClient.prepare(
-      "INSERT INTO relations (head, tail, type) VALUES (?, ?, ?)",
+      `
+       INSERT INTO relations (head, tail, type) VALUES (?, ?, ?) 
+       ON CONFLICT (head, tail, type) DO NOTHING
+      `,
       [head, tail, type]
     );
   }
