@@ -14,5 +14,9 @@ import SqlAdapter from "./src/OrganizationsBundle/adapters/sqlite/index.js";
   const adapter = await SqlAdapter(db);
   const repository = Repository(adapter);
 
-  app({ repository });
+  const server = app({ repository });
+
+  server.listen(8080, () => {
+    console.log("Listening on localhost:8080");
+  });
 })();

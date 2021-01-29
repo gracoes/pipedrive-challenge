@@ -15,16 +15,16 @@ export default function mapRelations({ org_name, daughters }) {
 
 function mapParents(parent, children) {
   return children.map(({ org_name }) => ({
-    head: parent,
-    tail: org_name,
+    head: org_name,
+    tail: parent,
     type: RelationshipType.PARENT,
   }));
 }
 
 function mapChildren(parent, children) {
   return children.map(({ org_name }) => ({
-    head: org_name,
-    tail: parent,
+    head: parent,
+    tail: org_name,
     type: RelationshipType.CHILD,
   }));
 }
