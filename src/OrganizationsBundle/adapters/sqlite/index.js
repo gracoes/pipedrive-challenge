@@ -1,8 +1,7 @@
 export default {
   init: async (dbClient) => {
-    const createTables = [
-      dbClient.exec(
-        `
+    await dbClient.exec(
+      `
           CREATE TABLE 
           IF NOT EXISTS relations (
             head TEXT,
@@ -11,32 +10,11 @@ export default {
             UNIQUE(head, tail, type)
           )
         `
-      ),
-      dbClient.exec(
-        `
-          CREATE TABLE 
-          IF NOT EXISTS relations_desc (
-            head TEXT,
-            tail TEXT,
-            type TEXT,
-            UNIQUE(head, tail, type)
-          )
-        `
-      ),
-    ];
+    );
 
-    await Promise.all(createTables);
-
-    const createIndices = [
-      dbClient.exec(
-        "CREATE INDEX IF NOT EXISTS head_tail on relations (head, tail)"
-      ),
-      dbClient.exec(
-        "CREATE INDEX IF NOT EXISTS head_tail_desc on relations_desc (head, tail DESC)"
-      ),
-    ];
-
-    await Promise.all(createIndices);
+    await dbClient.exec(
+      "CREATE INDEX IF NOT EXISTS head_tail on relations (head, tail)"
+    );
 
     return {
       batchInsert,
@@ -77,29 +55,22 @@ export default {
     }
 
     function prepareInsert({ head, tail, type }) {
-      const insertStatement = dbClient.prepare(
+      return dbClient.prepare(
         `INSERT INTO relations (head, tail, type) VALUES (?, ?, ?)
          ON CONFLICT (head, tail, type) DO NOTHING`,
         [head, tail, type]
       );
-      const insertDescStatement = dbClient.prepare(
-        `INSERT INTO relations_desc (head, tail, type) VALUES (?, ?, ?)
-         ON CONFLICT (head, tail, type) DO NOTHING`,
-        [head, tail, type]
-      );
-
-      return [insertStatement, insertDescStatement];
     }
 
     function prepareQueryByName({ name, before = null, after = null, limit }) {
       if (before) {
         return dbClient.prepare(
           `
-          WITH relations as
+          WITH relations_desc as
           (
-            SELECT * from relations_desc WHERE head = :name AND tail < :before ORDER BY tail DESC LIMIT :limit 
+            SELECT * from relations WHERE head = :name AND tail < :before ORDER BY tail DESC LIMIT :limit 
           )
-          SELECT * from relations ORDER BY tail ASC
+          SELECT * from relations_desc ORDER BY tail ASC
           `,
           [name, before, limit]
         );

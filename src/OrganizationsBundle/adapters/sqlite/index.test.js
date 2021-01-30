@@ -12,39 +12,30 @@ describe("SQLite Adapter", () => {
 
   afterAll(async () => {
     await db.exec("DROP TABLE relations");
-    await db.exec("DROP TABLE relations_desc");
     await db.close();
   });
 
   afterEach(async () => {
     await db.exec("DELETE FROM relations");
-    await db.exec("DELETE FROM relations_desc");
   });
 
   describe("init", () => {
-    test("it creates relations and relations_desc table when initiated", async () => {
+    test("it creates relations table when initiated", async () => {
       await Adapter.init(db);
 
       const records = await db.all("SELECT * FROM relations");
-      const recordsDesc = await db.all("SELECT * FROM relations_desc");
 
       expect(records).toEqual([]);
-      expect(recordsDesc).toEqual([]);
     });
 
-    test("it creates index on relations table and on relations_desc table when initiated", async () => {
+    test("it creates index on relations table when initiated", async () => {
       await Adapter.init(db);
 
       const index = await db.all(
         "SELECT * FROM sqlite_master WHERE type = 'index' AND name = 'head_tail'"
       );
 
-      const indexDesc = await db.all(
-        "SELECT * FROM sqlite_master WHERE type = 'index' AND name = 'head_tail_desc'"
-      );
-
       expect(index).toHaveLength(1);
-      expect(indexDesc).toHaveLength(1);
     });
   });
 
@@ -58,16 +49,9 @@ describe("SQLite Adapter", () => {
       ]);
 
       const row = await db.get("SELECT * FROM relations");
-      const rowDesc = await db.get("SELECT * FROM relations_desc");
 
       expect(res).toBeTruthy();
       expect(row).toEqual({
-        head: "Parent",
-        tail: "Child 2",
-        type: RelationshipType.PARENT,
-      });
-
-      expect(rowDesc).toEqual({
         head: "Parent",
         tail: "Child 2",
         type: RelationshipType.PARENT,
@@ -153,7 +137,7 @@ describe("SQLite Adapter", () => {
 
       for (let idx = 1; idx < 10; idx++) {
         await db.exec(
-          `INSERT INTO relations_desc VALUES ('Parent', 'Child ${idx}', 'parent')`
+          `INSERT INTO relations VALUES ('Parent', 'Child ${idx}', 'parent')`
         );
       }
 
