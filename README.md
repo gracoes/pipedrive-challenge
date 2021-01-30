@@ -149,12 +149,11 @@ To fetch the previous page sends `previous_cursor` as the `before` query paramet
 ## DB Schema
 ![schema](./docs/db_schema.png)  
 
-The service is supported by a `relations` table and a `relations_desc` table, with each one having an associated index.  
+The service is supported by a `relations` table and an associated index.  
 Each row of `relations` can be seen as an edge of a graph where the column `head` represents the start vertice, the column `tail` represents the end vertice, and the column `type` representing the type of relationship.  
 
-### The indices
-Since retrieving relations by alphabetical order needs to be supported, two indices were created, one on the `relations` and the other on `relations_desc` table.  
-The indices are schematically the same, where the `head` column acts as the "primary key" and the `tail` column acts as the "sort key". The only difference is that one index is in ascending order and the other is in descending order.  
+### The index
+Since retrieving relations by alphabetical order needs to be supported, and index was created on the `relations` table where the `head` column acts as the "primary key" and the `tail` column acts as the "sort key".  
 This can be seen as an `ORDER BY` done at insertion time instead of query time.    
 
 **Example**  
@@ -162,7 +161,7 @@ The relations table could be in this state and no order would be guaranteed if w
 
 ![table](./docs/db_schema_table.png)  
 
-However, the indices would be like this, guaranteeing both ascending and desceding alphabetical order.  
+However, the index would be like this, guaranteeing the alphabetical order.  
 
 ![index](./docs/db_schema_index.png)
 
